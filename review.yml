@@ -1,0 +1,54 @@
+---
+name: Indian Institute of Technology Delhi
+description: Indian Institute of Technology Delhi public developer/API footprint review for APIs.json cataloging.
+url: https://raw.githubusercontent.com/api-evangelist/iit-delhi/refs/heads/main/review.yml
+created: '2026-06-03'
+modified: '2026-06-03'
+reviews:
+  - date: '2026-06-03'
+    rating: 2
+    summary: >-
+      IIT Delhi has no centralized public API portal. The strongest verified,
+      machine-consumable surface is the Central Library DSpace 8 institutional
+      repository, whose REST root (/server/api) and OAI-PMH Identify endpoint
+      both resolve live with HTTP 200; the DSpace core/items endpoint returns
+      401 (auth required), as expected for protected content. An OAuth 2
+      authentication server is live but gated behind a login/CAPTCHA with no
+      published OAuth/OIDC endpoint docs. The student DevClub maintains the IITD
+      Connect mobile-app backend with public Postman documentation and an
+      open-source server repo, but it is a student project requiring a Bearer
+      token. The official iit-delhi GitHub org exists but holds only two minor
+      forked utility repos. The legacy eprint.iitd.ac.in OAI host did not
+      resolve from this probe (0). No endpoints were fabricated; entries reflect
+      only what resolved live.
+    endpoints:
+      - url: https://home.iitd.ac.in/
+        status: 200
+        note: Official institute website.
+      - url: https://ir.iitd.ac.in/server/api
+        status: 200
+        note: DSpace 8.0 REST API root; advertises dspaceVersion and authn links.
+      - url: https://ir.iitd.ac.in/server/oai/request?verb=Identify
+        status: 200
+        note: Live OAI-PMH 2.0 Identify response (valid XML).
+      - url: https://ir.iitd.ac.in/server/api/core/items
+        status: 401
+        note: DSpace items endpoint requires authentication.
+      - url: https://oauth.iitd.ac.in/
+        status: 200
+        note: OAuth 2 auth server; login/CAPTCHA gated, no public endpoint docs.
+      - url: https://documenter.getpostman.com/view/11367216/SzmmUEKQ
+        status: 200
+        note: IITD Connect API Postman docs (DevClub); Bearer-token auth.
+      - url: https://github.com/iit-delhi
+        status: 200
+        note: Official IIT Delhi GitHub org; only two minor forked repos.
+      - url: https://github.com/devclub-iitd
+        status: 200
+        note: DevClub IIT Delhi GitHub org; hosts IITDConnectServer source.
+      - url: https://www.linkedin.com/school/iitdelhi/
+        status: 200
+        note: Official IIT Delhi LinkedIn school page.
+      - url: http://eprint.iitd.ac.in/
+        status: 0
+        note: Legacy EPrints/OAI host did not resolve from this probe.

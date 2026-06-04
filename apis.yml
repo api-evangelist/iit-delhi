@@ -1,0 +1,109 @@
+---
+aid: iit-delhi
+name: Indian Institute of Technology Delhi
+description: >-
+  Indian Institute of Technology Delhi (IIT Delhi) is a public technical and
+  research university in Hauz Khas, New Delhi, an Institute of National
+  Importance and Institution of Eminence ranked #118 in the QS World University
+  Rankings 2025. Its public developer/API footprint is modest and largely
+  research- and student-driven rather than a centralized developer program: the
+  Central Library runs an open DSpace 8 institutional repository exposing a
+  DSpace REST API and an OAI-PMH metadata-harvesting interface, the institute
+  operates an OAuth 2 authentication server for campus apps, and the student
+  DevClub maintains the IITD Connect mobile-app backend with Postman-documented
+  endpoints. There is no unified, productized public API portal.
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/iit-delhi/refs/heads/main/apis.yml
+tags:
+  - Education
+  - Higher Education
+  - University
+  - Research
+  - India
+  - Open Access
+  - Library
+created: '2026-06-03'
+modified: '2026-06-03'
+specificationVersion: '0.19'
+apis:
+  - aid: iit-delhi:dspace-rest
+    name: IIT Delhi Institutional Repository DSpace REST API
+    description: >-
+      The IIT Delhi Central Library institutional repository runs on DSpace 8.0
+      and exposes the standard DSpace REST/HAL API at /server/api. The root
+      endpoint is public and advertises the dspaceVersion, authn, and core
+      links; most content endpoints (e.g. core/items) require authentication and
+      return HTTP 401 for anonymous requests.
+    humanURL: https://ir.iitd.ac.in/
+    baseURL: https://ir.iitd.ac.in/server/api
+    tags: [ Repository, DSpace, Open Access, Research, Library, REST ]
+    properties:
+      - type: Documentation
+        url: https://ir.iitd.ac.in/server/api
+  - aid: iit-delhi:oai-pmh
+    name: IIT Delhi Institutional Repository OAI-PMH
+    description: >-
+      OAI-PMH 2.0 metadata-harvesting interface for the IIT Delhi DSpace 8
+      institutional repository, enabling harvesting of theses, dissertations,
+      and faculty/student scholarly output. The Identify verb resolves and
+      returns a valid OAI-PMH XML response.
+    humanURL: https://ir.iitd.ac.in/
+    baseURL: https://ir.iitd.ac.in/server/oai/request
+    tags: [ OAI-PMH, Metadata, Harvesting, Open Access, Library, Research ]
+    properties:
+      - type: Documentation
+        url: https://ir.iitd.ac.in/server/oai/request?verb=Identify
+  - aid: iit-delhi:oauth2
+    name: IIT Delhi OAuth 2 Authentication Server
+    description: >-
+      IIT Delhi operates an OAuth 2 authorization server that lets developers
+      register their own campus apps and authenticate users with IIT Delhi
+      credentials. The portal is live but gated behind a login/CAPTCHA, and no
+      public OAuth/OpenID Connect endpoint or scope documentation is published.
+    humanURL: https://oauth.iitd.ac.in/
+    tags: [ Authentication, OAuth2, Identity, SSO ]
+    properties:
+      - type: Documentation
+        url: https://oauth.iitd.ac.in/
+      - type: Authentication
+        url: https://oauth.iitd.ac.in/
+  - aid: iit-delhi:iitd-connect
+    name: IITD Connect API (DevClub)
+    description: >-
+      Backend API for IITD Connect, the student-built IIT Delhi mobile/campus
+      app maintained by DevClub. Documented via Postman with endpoints grouped
+      into User, Event, Club/Hostel/Body, IITD News, and Calendar collections;
+      requests require a Bearer token obtained from a login request. This is a
+      student-club project rather than an official institutional API.
+    humanURL: https://documenter.getpostman.com/view/11367216/SzmmUEKQ
+    tags: [ Mobile, Campus, Student, Events, DevClub ]
+    properties:
+      - type: Documentation
+        url: https://documenter.getpostman.com/view/11367216/SzmmUEKQ
+      - type: GitHub
+        url: https://github.com/devclub-iitd/IITDConnectServer
+common:
+  - type: Website
+    url: https://home.iitd.ac.in/
+  - type: GitHub
+    url: https://github.com/iit-delhi
+  - type: SourceCode
+    url: https://github.com/devclub-iitd
+  - type: LinkedIn
+    url: https://www.linkedin.com/school/iitdelhi/
+  - type: Authentication
+    url: https://oauth.iitd.ac.in/
+  - type: Plans
+    url: plans/iit-delhi-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/iit-delhi-rate-limits.yml
+  - type: FinOps
+    url: finops/iit-delhi-finops.yml
+  - type: Review
+    url: review.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
