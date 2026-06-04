@@ -1,0 +1,50 @@
+{
+  "@context": {
+    "schema": "https://schema.org/",
+    "iitd": "https://home.iitd.ac.in/vocab#",
+    "name": "schema:name",
+    "description": "schema:description",
+    "url": "schema:url",
+    "identifier": "schema:identifier",
+    "logo": "schema:logo",
+    "sameAs": "schema:sameAs",
+    "department": "schema:department",
+    "Organization": "schema:CollegeOrUniversity",
+    "EducationalOrganization": "schema:EducationalOrganization",
+    "API": "iitd:API",
+    "apis": {
+      "@id": "iitd:apis",
+      "@container": "@set"
+    },
+    "humanURL": {
+      "@id": "schema:url",
+      "@type": "@id"
+    },
+    "baseURL": {
+      "@id": "iitd:baseURL",
+      "@type": "@id"
+    },
+    "tags": {
+      "@id": "schema:keywords",
+      "@container": "@set"
+    },
+    "Repository": "iitd:Repository",
+    "Item": "iitd:RepositoryItem",
+    "Collection": "schema:Collection",
+    "Community": "iitd:Community",
+    "Bitstream": "iitd:Bitstream",
+    "title": "schema:name",
+    "creator": "schema:creator",
+    "dateIssued": "schema:datePublished",
+    "abstract": "schema:abstract",
+    "handle": "schema:identifier"
+  },
+  "@type": "EducationalOrganization",
+  "name": "Indian Institute of Technology Delhi",
+  "url": "https://home.iitd.ac.in/",
+  "sameAs": [
+    "https://www.linkedin.com/school/iitdelhi/",
+    "https://github.com/iit-delhi",
+    "https://github.com/devclub-iitd"
+  ]
+}
