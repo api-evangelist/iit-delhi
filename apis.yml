@@ -86,6 +86,8 @@ apis:
       - type: GitHub
         url: https://github.com/devclub-iitd/IITDConnectServer
 common:
+  - type: DomainSecurity
+    url: security/iit-delhi-domain-security.yml
   - type: Website
     url: https://home.iitd.ac.in/
   - type: GitHub
