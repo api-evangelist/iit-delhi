@@ -76,7 +76,15 @@ apis:
       credentials. The portal is live but gated behind a login/CAPTCHA, and no
       public OAuth/OpenID Connect endpoint or scope documentation is published.
     humanURL: https://oauth.iitd.ac.in/
-    tags: [ Authentication, OAuth2, Identity, SSO ]
+    tags:
+    - Authentication
+    - Identity
+    - SSO
+    tags_raw:
+    - Authentication
+    - OAuth2
+    - Identity
+    - SSO
     properties:
       - type: Documentation
         url: https://oauth.iitd.ac.in/
@@ -91,7 +99,18 @@ apis:
       requests require a Bearer token obtained from a login request. This is a
       student-club project rather than an official institutional API.
     humanURL: https://documenter.getpostman.com/view/11367216/SzmmUEKQ
-    tags: [ Mobile, Campus, Student, Events, DevClub ]
+    tags:
+    - Mobile
+    - Campus
+    - Students
+    - Event
+    - DevClub
+    tags_raw:
+    - Mobile
+    - Campus
+    - Student
+    - Events
+    - DevClub
     properties:
       - type: Documentation
         url: https://documenter.getpostman.com/view/11367216/SzmmUEKQ
