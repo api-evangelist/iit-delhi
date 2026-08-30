@@ -1,17 +1,34 @@
 ---
 aid: iit-delhi
 name: Indian Institute of Technology Delhi
+x-type: university
+x-category: Institute of Technology
 description: >-
   Indian Institute of Technology Delhi (IIT Delhi) is a public technical and
-  research university in Hauz Khas, New Delhi, an Institute of National
-  Importance and Institution of Eminence ranked #118 in the QS World University
-  Rankings 2025. Its public developer/API footprint is modest and largely
-  research- and student-driven rather than a centralized developer program: the
-  Central Library runs an open DSpace 8 institutional repository exposing a
-  DSpace REST API and an OAI-PMH metadata-harvesting interface, the institute
-  operates an OAuth 2 authentication server for campus apps, and the student
-  DevClub maintains the IITD Connect mobile-app backend with Postman-documented
-  endpoints. There is no unified, productized public API portal.
+  research university in Hauz Khas, New Delhi — an Institute of National
+  Importance and an Institution of Eminence, ranked #118 in the QS World
+  University Rankings 2025. IIT Delhi operates no developer portal, publishes no
+  API documentation, no OpenAPI, no terms of service for machine access and no
+  security.txt or llms.txt, and nothing in this profile was published by the
+  institute as a developer-facing product. What it does operate, and what this
+  profile records, is a small set of genuinely institution-run machine-readable
+  surfaces found by probing its own domain: a Shibboleth SAML 2.0 identity
+  provider at idp.iitd.ac.in whose metadata is self-published and registered in
+  the Indian access-management federation INFED and interfederated through
+  eduGAIN since 2020 — the institute's strongest and least-known standards
+  conformance; a DSpace 8 institutional repository at ir.iitd.ac.in with a
+  functional OAI-PMH 2.0 harvesting endpoint advertising thirteen metadata
+  formats; an OAuth 2 apps server at oauth.iitd.ac.in that lets campus developers
+  register applications but publishes no discovery document, endpoint list or
+  scope vocabulary; a Moodle deployment whose web-service endpoint answers but is
+  token-gated; and an undocumented JSON API behind the shared React/Express site
+  platform its departments run, which answers anonymous reads on
+  convocation.iitd.ac.in, ird.iitd.ac.in and csc.iitd.ac.in. Its research
+  information system is a tenant on INFLIBNET's national IRINS platform, and its
+  library discovery runs through the DELNET consortium — both real institutional
+  facts, neither IIT Delhi's engineering. The 2019-era student DevClub API that
+  earlier profiles listed as a surface is dead: its host redirects to a domain
+  that no longer resolves and its TLS certificate expired in August 2025.
 type: Index
 deliveryModel:
   model: saas
@@ -44,102 +61,281 @@ tags:
   - Education
   - Higher Education
   - University
+  - Institute of Technology
   - Research
   - India
   - Open Access
   - Library
+  - Research Repository
+  - Identity Federation
 created: '2026-06-03'
-modified: '2026-06-03'
+modified: '2026-08-30'
 specificationVersion: '0.23'
+x-coverage:
+  state: gated
+  reason: auth_required
+  detail: >-
+    IIT Delhi is genuinely thin, and the thinness is a documentation gap rather
+    than an absence of surfaces. Five institution-operated machine-readable
+    surfaces were confirmed live on 2026-08-30 — a Shibboleth SAML 2.0 identity
+    provider, an OAI-PMH 2.0 harvesting endpoint, a DSpace 8 REST API, a Moodle
+    web-service endpoint and an undocumented departmental JSON API — and the
+    institute documents none of them. The two that would most repay description
+    are gated: the OAuth 2 apps server at oauth.iitd.ac.in is entirely behind an
+    interactive login and returns 404 for both OpenID Connect discovery and RFC
+    8414 authorization-server metadata, so its endpoints, grants and scopes are
+    unreadable from outside; and the DSpace content endpoints return 401 to
+    anonymous callers even though the root document and discovery search are
+    public. No contract in this repo is a vendor's, and none was saved from a
+    vendor host. The one tenant relationship recorded — IIT Delhi's research
+    information portal on INFLIBNET's IRINS platform — sits behind a Cloudflare
+    bot challenge and was confirmed by name from third-party sources rather than
+    read directly.
+  evidence:
+    - url: https://idp.iitd.ac.in/idp/shibboleth
+      status: 200
+    - url: https://ir.iitd.ac.in/server/oai/request?verb=Identify
+      status: 200
+    - url: https://ir.iitd.ac.in/server/api
+      status: 200
+    - url: https://ir.iitd.ac.in/server/api/core/items
+      status: 401
+    - url: https://oauth.iitd.ac.in/
+      status: 200
+    - url: https://oauth.iitd.ac.in/.well-known/openid-configuration
+      status: 404
+    - url: https://oauth.iitd.ac.in/.well-known/oauth-authorization-server
+      status: 404
+    - url: https://convocation.iitd.ac.in/api/news
+      status: 200
+    - url: https://convocation.iitd.ac.in/api/gallery
+      status: 401
+    - url: https://moodle.iitd.ac.in/webservice/rest/server.php
+      status: 200
+    - url: https://iitd.irins.org/
+      status: 403
+    - url: http://api.devclub.in/
+      status: 302
+    - url: https://home.iitd.ac.in/.well-known/security.txt
+      status: 404
+    - url: https://home.iitd.ac.in/llms.txt
+      status: 404
 apis:
+  - aid: iit-delhi:idp-shibboleth
+    name: IIT Delhi Shibboleth Identity Provider (SAML 2.0 metadata)
+    x-operator: institution
+    description: >-
+      IIT Delhi runs its own Shibboleth identity provider at idp.iitd.ac.in and
+      self-publishes its SAML 2.0 metadata as a machine-readable EntityDescriptor.
+      The document names the institute as the organisation, scopes assertions to
+      iitd.ac.in, and advertises IDPSSODescriptor and AttributeAuthorityDescriptor
+      roles across HTTP-Redirect, HTTP-POST, POST-SimpleSign and SOAP bindings. The
+      entity is registered in INFED, the Indian access-management federation
+      operated by INFLIBNET, and interfederated through eduGAIN as entity 672721
+      since 2020-03-28 with a passing connectivity check. Institution-operated by
+      definition, and the single most substantial machine-readable artifact IIT
+      Delhi publishes about itself.
+    humanURL: https://idp.iitd.ac.in/
+    baseURL: https://idp.iitd.ac.in/idp
+    tags: [ Identity, Federation, SAML, Shibboleth, Single Sign-On, eduGAIN, INFED ]
+    properties:
+      - type: IdentityFederation
+        url: https://idp.iitd.ac.in/idp/shibboleth
+      - type: Authentication
+        url: authentication/iit-delhi-authentication.yml
+      - type: Conformance
+        url: conformance/iit-delhi-conformance.yml
+  - aid: iit-delhi:oai-pmh
+    name: IIT Delhi Institutional Repository OAI-PMH
+    x-operator: institution
+    description: >-
+      OAI-PMH 2.0 metadata-harvesting interface for the IIT Delhi DSpace 8
+      institutional repository, on the institute's own host. Verified functional on
+      2026-08-30, not merely mounted: Identify, ListMetadataFormats, ListSets and
+      ListRecords all return valid responses. Thirteen metadata formats are
+      advertised — oai_dc, qdc, mods, mets, didl, ore, xoai, dim, rdf, marc, etdms,
+      rioxx and uketd_dc — and sets include Electronic Theses and Dissertations plus
+      decade collections from 1961 onward. OAI-PMH is an open protocol rather than a
+      vendor contract, so this surface is IIT Delhi's to claim.
+    humanURL: https://ir.iitd.ac.in/
+    baseURL: https://ir.iitd.ac.in/server/oai/request
+    tags: [ OAI-PMH, Metadata, Harvesting, Open Access, Library, Research, Theses ]
+    properties:
+      - type: Documentation
+        url: https://ir.iitd.ac.in/server/oai/request?verb=Identify
+      - type: Conformance
+        url: conformance/iit-delhi-conformance.yml
+  - aid: iit-delhi:site-platform
+    name: IIT Delhi Departmental Site Platform API
+    x-operator: institution
+    description: >-
+      Undocumented JSON API behind the shared React/Express site platform IIT Delhi
+      runs across departmental and unit subdomains. Anonymous reads were confirmed on
+      2026-08-30 across three deployments — convocation.iitd.ac.in serves /api/news
+      and /api/contact, ird.iitd.ac.in serves /api/contact, /api/circulars and
+      /api/announcements, and csc.iitd.ac.in serves /api/contact and /api/pages.
+      Media collections and writes are gated behind the institute's own OAuth 2
+      server, which the API names in its own 401 body. IIT Delhi publishes no
+      documentation, version marker, changelog or contract for this surface; the
+      OpenAPI in this repo was reverse-described entirely from live probes and is
+      marked as such.
+    humanURL: https://convocation.iitd.ac.in/
+    baseURL: https://convocation.iitd.ac.in/api
+    tags: [ Content, Departmental, JSON, Undocumented, Campus ]
+    properties:
+      - type: OpenAPI
+        url: openapi/iit-delhi-site-platform-openapi.yml
+      - type: JSONSchema
+        url: json-schema/iit-delhi-site-platform-schemas.json
+      - type: Examples
+        url: examples/iit-delhi-site-platform-examples.json
+      - type: Errors
+        url: errors/iit-delhi-errors.yml
+      - type: Authentication
+        url: authentication/iit-delhi-authentication.yml
   - aid: iit-delhi:dspace-rest
     name: IIT Delhi Institutional Repository DSpace REST API
+    x-operator: institution
     description: >-
-      The IIT Delhi Central Library institutional repository runs on DSpace 8.0
-      and exposes the standard DSpace REST/HAL API at /server/api. The root
-      endpoint is public and advertises the dspaceVersion, authn, and core
-      links; most content endpoints (e.g. core/items) require authentication and
-      return HTTP 401 for anonymous requests.
+      The IIT Delhi Central Library institutional repository runs on DSpace 8.0 and
+      exposes the standard DSpace REST/HAL API at /server/api on the institute's own
+      host. The root endpoint is public and advertises dspaceVersion "DSpace 8.0",
+      an authn link and roughly seventy resource links; discovery search answers
+      anonymously; core content endpoints such as core/items return HTTP 401. The
+      contract itself is the DSpace product's and belongs to DSpace, so no DSpace
+      OpenAPI is saved under this institution — what IIT Delhi operates is the
+      deployment and the data, which is what this entry records.
     humanURL: https://ir.iitd.ac.in/
     baseURL: https://ir.iitd.ac.in/server/api
     tags: [ Repository, DSpace, Open Access, Research, Library, REST ]
     properties:
       - type: Documentation
         url: https://ir.iitd.ac.in/server/api
-  - aid: iit-delhi:oai-pmh
-    name: IIT Delhi Institutional Repository OAI-PMH
-    description: >-
-      OAI-PMH 2.0 metadata-harvesting interface for the IIT Delhi DSpace 8
-      institutional repository, enabling harvesting of theses, dissertations,
-      and faculty/student scholarly output. The Identify verb resolves and
-      returns a valid OAI-PMH XML response.
-    humanURL: https://ir.iitd.ac.in/
-    baseURL: https://ir.iitd.ac.in/server/oai/request
-    tags: [ OAI-PMH, Metadata, Harvesting, Open Access, Library, Research ]
-    properties:
-      - type: Documentation
-        url: https://ir.iitd.ac.in/server/oai/request?verb=Identify
+      - type: ResearchRepository
+        url: https://ir.iitd.ac.in/
+      - type: Errors
+        url: errors/iit-delhi-errors.yml
   - aid: iit-delhi:oauth2
     name: IIT Delhi OAuth 2 Authentication Server
+    x-operator: institution
     description: >-
       IIT Delhi operates an OAuth 2 authorization server that lets developers
       register their own campus apps and authenticate users with IIT Delhi
-      credentials. The portal is live but gated behind a login/CAPTCHA, and no
-      public OAuth/OpenID Connect endpoint or scope documentation is published.
+      credentials, and it is the real gate for the institute's own web APIs — the
+      departmental platform's 401 body names it directly. The portal is live but
+      wholly behind a login, and no discovery document is published: both
+      /.well-known/openid-configuration and /.well-known/oauth-authorization-server
+      returned 404 on 2026-08-30, and no endpoint, grant type or scope vocabulary
+      exists in public. Publishing RFC 8414 metadata would be the single
+      highest-leverage change available to this institution.
     humanURL: https://oauth.iitd.ac.in/
-    tags:
-    - Authentication
-    - Identity
-    - SSO
+    tags: [ Authentication, Identity, SSO, OAuth 2 ]
     tags_raw:
-    - Authentication
-    - OAuth2
-    - Identity
-    - SSO
+      - Authentication
+      - OAuth2
+      - Identity
+      - SSO
     properties:
       - type: Documentation
         url: https://oauth.iitd.ac.in/
       - type: Authentication
-        url: https://oauth.iitd.ac.in/
-  - aid: iit-delhi:iitd-connect
-    name: IITD Connect API (DevClub)
+        url: authentication/iit-delhi-authentication.yml
+  - aid: iit-delhi:moodle-webservices
+    name: IIT Delhi Moodle Web Services
+    x-operator: institution
     description: >-
-      Backend API for IITD Connect, the student-built IIT Delhi mobile/campus
-      app maintained by DevClub. Documented via Postman with endpoints grouped
-      into User, Event, Club/Hostel/Body, IITD News, and Calendar collections;
-      requests require a Bearer token obtained from a login request. This is a
-      student-club project rather than an official institutional API.
+      IIT Delhi self-hosts Moodle for the 2025-2026 academic year at
+      moodle.iitd.ac.in, and its web-services endpoint is live: an anonymous call to
+      /webservice/rest/server.php returns Moodle's structured invalidtoken error
+      rather than a 404, so the REST protocol is enabled and token-gated. No LTI
+      Advantage platform endpoints are exposed — /mod/lti/certs.php, token.php and
+      auth.php all return 404. The host is the institution's own; the contract is
+      Moodle's product contract and is not saved here.
+    humanURL: https://moodle.iitd.ac.in/
+    baseURL: https://moodle.iitd.ac.in/webservice/rest/server.php
+    tags: [ Learning Management, Moodle, Teaching, Campus, Token Auth ]
+    properties:
+      - type: Documentation
+        url: https://moodle.iitd.ac.in/
+      - type: Errors
+        url: errors/iit-delhi-errors.yml
+  - aid: iit-delhi:irins
+    name: IIT Delhi Research Profiles on IRINS
+    x-operator: tenant
+    description: >-
+      IIT Delhi's research information management portal is an institution-specific
+      tenant on IRINS, the Indian Research Information Network System operated by
+      the INFLIBNET Centre, an Inter-University Centre of the University Grants
+      Commission. The data — faculty profiles, publications, academic identifiers —
+      is IIT Delhi's; the platform, the contract and any API belong to INFLIBNET, so
+      nothing is saved under this institution. The host returned a Cloudflare bot
+      challenge on 2026-08-30, which grades live rather than dead; the tenancy was
+      confirmed by name from third-party sources rather than read directly.
+    humanURL: https://iitd.irins.org/
+    tags: [ Research Information, Profiles, IRINS, INFLIBNET, Tenant ]
+    properties:
+      - type: Website
+        url: https://iitd.irins.org/
+  - aid: iit-delhi:iitd-connect
+    name: IITD Connect API (DevClub) — retired
+    x-operator: tenant
+    description: >-
+      Backend API for IITD Connect, the student-built IIT Delhi campus app maintained
+      by DevClub, documented via Postman with User, Event, Club/Hostel/Body, News and
+      Calendar collections and a bearer-token login. The deployment is DEAD as of
+      2026-08-30: api.devclub.in and devclub.iitd.ac.in both 30x to https://devclub.in,
+      which does not resolve, and their wildcard TLS certificate expired on
+      2025-08-01. The source repository was last pushed in September 2023 and the
+      Postman collection declares only a {{url}} variable with no base URL, so no
+      callable host exists. Kept as a recorded relationship rather than deleted: this
+      is a student-club project running on institute infrastructure, not IIT Delhi's
+      own engineering, and the honest record is that it existed and has lapsed.
     humanURL: https://documenter.getpostman.com/view/11367216/SzmmUEKQ
-    tags:
-    - Mobile
-    - Campus
-    - Students
-    - Event
-    - DevClub
+    tags: [ Mobile, Campus, Student, Event, DevClub, Retired ]
     tags_raw:
-    - Mobile
-    - Campus
-    - Student
-    - Events
-    - DevClub
+      - Mobile
+      - Campus
+      - Student
+      - Events
+      - DevClub
     properties:
       - type: Documentation
         url: https://documenter.getpostman.com/view/11367216/SzmmUEKQ
-      - type: GitHub
+      - type: SourceCode
         url: https://github.com/devclub-iitd/IITDConnectServer
 common:
-  - type: DomainSecurity
-    url: security/iit-delhi-domain-security.yml
   - type: Website
     url: https://home.iitd.ac.in/
-  - type: GitHub
+  - type: IdentityFederation
+    url: https://idp.iitd.ac.in/idp/shibboleth
+  - type: ResearchRepository
+    url: https://ir.iitd.ac.in/
+  - type: LibraryCatalog
+    url: https://library.iitd.ac.in/
+  - type: AIPolicy
+    url: https://academics.iitd.ac.in/wp-content/uploads/2025/09/IITD-AI-Guidelines.pdf
+  - type: Authentication
+    url: https://oauth.iitd.ac.in/
+  - type: GitHubOrganization
     url: https://github.com/iit-delhi
   - type: SourceCode
     url: https://github.com/devclub-iitd
   - type: LinkedIn
     url: https://www.linkedin.com/school/iitdelhi/
+  - type: OpenAPI
+    url: openapi/iit-delhi-site-platform-openapi.yml
+  - type: JSONSchema
+    url: json-schema/iit-delhi-site-platform-schemas.json
+  - type: Examples
+    url: examples/iit-delhi-site-platform-examples.json
   - type: Authentication
-    url: https://oauth.iitd.ac.in/
+    url: authentication/iit-delhi-authentication.yml
+  - type: Errors
+    url: errors/iit-delhi-errors.yml
+  - type: Conformance
+    url: conformance/iit-delhi-conformance.yml
+  - type: DomainSecurity
+    url: security/iit-delhi-domain-security.yml
   - type: Plans
     url: plans/iit-delhi-plans-pricing.yml
   - type: RateLimits
