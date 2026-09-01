@@ -229,12 +229,15 @@ apis:
       exists in public. Publishing RFC 8414 metadata would be the single
       highest-leverage change available to this institution.
     humanURL: https://oauth.iitd.ac.in/
-    tags: [ Authentication, Identity, SSO, OAuth 2 ]
+    tags:
+    - Authentication
+    - Identity
+    - SSO
     tags_raw:
-      - Authentication
-      - OAuth2
-      - Identity
-      - SSO
+    - Authentication
+    - OAuth2
+    - Identity
+    - SSO
     properties:
       - type: Documentation
         url: https://oauth.iitd.ac.in/
@@ -291,19 +294,27 @@ apis:
       is a student-club project running on institute infrastructure, not IIT Delhi's
       own engineering, and the honest record is that it existed and has lapsed.
     humanURL: https://documenter.getpostman.com/view/11367216/SzmmUEKQ
-    tags: [ Mobile, Campus, Student, Event, DevClub, Retired ]
+    tags:
+    - Mobile
+    - Campus
+    - Students
+    - Event
+    - DevClub
     tags_raw:
-      - Mobile
-      - Campus
-      - Student
-      - Events
-      - DevClub
+    - Mobile
+    - Campus
+    - Student
+    - Events
+    - DevClub
     properties:
       - type: Documentation
         url: https://documenter.getpostman.com/view/11367216/SzmmUEKQ
       - type: SourceCode
         url: https://github.com/devclub-iitd/IITDConnectServer
 common:
+  - type: License
+    name: MIT
+    url: https://github.com/devclub-iitd/IITDConnectServer/blob/master/LICENSE
   - type: Website
     url: https://home.iitd.ac.in/
   - type: IdentityFederation
