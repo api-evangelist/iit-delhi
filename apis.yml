@@ -126,6 +126,14 @@ apis:
   - Federation
   - SAML
   - Shibboleth
+  - SSO
+  - eduGAIN
+  - INFED
+  tags_raw:
+  - Identity
+  - Federation
+  - SAML
+  - Shibboleth
   - Single Sign-On
   - eduGAIN
   - INFED
@@ -243,6 +251,12 @@ apis:
     rather than dead; the tenancy was confirmed by name from third-party sources rather than read directly.
   humanURL: https://iitd.irins.org/
   tags:
+  - Research Information
+  - Profiles
+  - IRINS
+  - INFLIBNET
+  - Tenants
+  tags_raw:
   - Research Information
   - Profiles
   - IRINS
