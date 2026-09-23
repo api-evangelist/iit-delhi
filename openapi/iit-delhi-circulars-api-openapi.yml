@@ -1,0 +1,96 @@
+openapi: 3.2.0
+info:
+  title: IIT Delhi Departmental Site Platform Circulars API
+  version: '2026-08-30'
+  summary: Undocumented but publicly readable JSON API backing the shared React/Express site platform IIT Delhi runs across its departmental and unit subdomains.
+  description: 'Indian Institute of Technology Delhi operates a shared web platform used by several
+
+    of its departments and administrative units — the Convocation office
+
+    (`convocation.iitd.ac.in`), the Industrial Research & Development Unit
+
+    (`ird.iitd.ac.in`) and the Computer Services Centre (`csc.iitd.ac.in`) all serve a
+
+    create-react-app front end backed by an Express JSON API mounted at `/api`.'
+  contact:
+    name: Computer Services Centre, IIT Delhi
+    url: https://csc.iitd.ac.in/
+  x-operator: institution
+  x-provenance:
+    generated: '2026-08-30'
+    method: derived
+    x-derivation: probed
+    source:
+    - https://convocation.iitd.ac.in/api/news
+    - https://convocation.iitd.ac.in/api/contact
+    - https://convocation.iitd.ac.in/api/gallery
+    - https://ird.iitd.ac.in/api/contact
+    - https://ird.iitd.ac.in/api/circulars
+    - https://ird.iitd.ac.in/api/announcements
+    - https://ird.iitd.ac.in/api/pages
+    - https://csc.iitd.ac.in/api/contact
+    - https://csc.iitd.ac.in/api/pages
+    note: Reverse-described from observed anonymous responses. IIT Delhi did not publish this document and does not describe this API anywhere. Not a provider-authored contract.
+servers:
+- url: https://convocation.iitd.ac.in/api
+  description: Convocation office deployment (verified 2026-08-30)
+- url: https://ird.iitd.ac.in/api
+  description: Industrial Research & Development Unit deployment (verified 2026-08-30)
+- url: https://csc.iitd.ac.in/api
+  description: Computer Services Centre deployment (verified 2026-08-30)
+tags:
+- name: Circulars
+  description: Numbered administrative circulars with attached documents.
+paths:
+  /circulars:
+    get:
+      operationId: listCirculars
+      tags:
+      - Circulars
+      summary: List administrative circulars
+      description: Verified 200 on ird.iitd.ac.in, 49 records at probe time. Note the capitalised `Circular` and `Description` property names — the platform serialises database columns verbatim and its casing is not consistent across resources.
+      responses:
+        '200':
+          description: Array of circular records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Circular'
+        '404':
+          description: Route not mounted on this deployment
+components:
+  schemas:
+    Circular:
+      type: object
+      title: Circular
+      properties:
+        id:
+          type: integer
+        Circular:
+          type: string
+          description: Circular reference number and date
+        Description:
+          type:
+          - string
+          - 'null'
+        file:
+          type:
+          - string
+          - 'null'
+          description: Relative path to the attached document
+        c_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      required:
+      - id
+      - Circular
+  securitySchemes:
+    iitdOAuthSession:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+      description: Session cookie issued after an interactive login against the institute OAuth 2 server at https://oauth.iitd.ac.in/. That server publishes no OpenID Connect discovery document, no authorization or token endpoint documentation and no scope vocabulary — verified 404 on /.well-known/openid-configuration and /.well-known/oauth-authorization-server on 2026-08-30 — so the flow cannot be described further from public evidence.

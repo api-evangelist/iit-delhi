@@ -1,0 +1,86 @@
+---
+name: IIT Delhi — observed error semantics
+generated: '2026-08-30'
+method: derived
+x-derivation: probed
+source:
+  - https://convocation.iitd.ac.in/api/gallery
+  - https://ird.iitd.ac.in/api/pages
+  - https://ir.iitd.ac.in/server/api/core/items
+  - https://ir.iitd.ac.in/signposting/describedby/123456789
+  - https://moodle.iitd.ac.in/webservice/rest/server.php
+  - https://ir.iitd.ac.in/server/oai/request
+note: >-
+  IIT Delhi publishes no error reference for any of its surfaces. Every shape below was
+  observed live on 2026-08-30. There is no single error convention across the institute —
+  four different products produce four different error bodies, and the institute's own
+  Express platform produces two more.
+
+conventions:
+  - surface: Departmental site platform (institution-authored)
+    x-operator: institution
+    consistency: poor
+    shapes:
+      - status: 401
+        content_type: application/json
+        body: '{"success":false,"error":"...","code":"NOT_AUTHENTICATED","debug":{...}}'
+        has_machine_code: true
+        note: Carries a stable string `code`, which is the one good error-design decision on this surface.
+      - status: 500
+        content_type: application/json
+        body: '{"error":"Failed to fetch cards"}'
+        has_machine_code: false
+        note: >-
+          No code, no correlation id, no retry guidance, and the message leaks an internal
+          implementation noun ("cards") that appears nowhere in the API's own vocabulary.
+      - status: 404
+        content_type: text/html
+        body: '<pre>Cannot GET /</pre>'
+        has_machine_code: false
+        note: >-
+          Express's default HTML 404 is returned from a JSON API, so a client asking for
+          an unmounted route gets HTML where it negotiated JSON. Observed on
+          ird.iitd.ac.in/api and convocation.iitd.ac.in/api.
+
+  - surface: DSpace 8 repository REST (product contract, institution-hosted)
+    x-operator: institution
+    consistency: good
+    shapes:
+      - status: 401
+        content_type: application/json
+        body: '{"timestamp":"...","status":401,"error":"Unauthorized","message":"Authentication is required","path":"/server/api/core/items"}'
+      - status: 404
+        content_type: application/problem+json
+        body: '{"type":"about:blank","title":"Not Found","status":404,"detail":"...","instance":"..."}'
+        note: RFC 9457 problem+json, inherited from the DSpace/Spring stack — not an IIT Delhi design choice.
+
+  - surface: Moodle web services (product contract, institution-hosted)
+    x-operator: institution
+    consistency: product-standard
+    shapes:
+      - status: 200
+        content_type: application/json
+        body: '{"exception":"moodle_exception","errorcode":"invalidtoken","message":"Invalid token - token not found"}'
+        note: >-
+          Moodle answers an authentication failure with HTTP 200 and an error envelope.
+          Correct for Moodle, wrong for any client that reads status codes.
+
+  - surface: OAI-PMH 2.0 (open standard, institution-hosted)
+    x-operator: institution
+    consistency: standard-conformant
+    note: >-
+      Errors are returned as OAI-PMH `<error code="...">` elements per the protocol,
+      always with HTTP 200. Standard behaviour, not a defect.
+
+findings:
+  - severity: medium
+    id: html-404-from-json-api
+    detail: An unmounted route on the departmental platform returns Express's HTML 404 rather than a JSON body.
+  - severity: low
+    id: unstructured-500
+    detail: 500 responses carry no code, correlation id or retry hint.
+  - severity: medium
+    id: no-published-error-reference
+    detail: >-
+      No error catalogue exists for any IIT Delhi surface, so every one of these shapes is
+      knowable only by provoking it.

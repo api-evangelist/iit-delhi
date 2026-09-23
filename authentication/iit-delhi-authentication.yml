@@ -1,0 +1,133 @@
+---
+name: IIT Delhi — authentication surfaces
+generated: '2026-08-30'
+method: derived
+x-derivation: probed
+source:
+  - https://oauth.iitd.ac.in/
+  - https://oauth.iitd.ac.in/.well-known/openid-configuration
+  - https://oauth.iitd.ac.in/.well-known/oauth-authorization-server
+  - https://idp.iitd.ac.in/idp/shibboleth
+  - https://convocation.iitd.ac.in/api/gallery
+  - https://ir.iitd.ac.in/server/api
+  - https://ir.iitd.ac.in/server/api/core/items
+note: >-
+  Every statement below was observed on 2026-08-30 against a live host. IIT Delhi
+  publishes no developer-facing authentication documentation of any kind; what is
+  recorded here is behaviour, not a documented contract.
+
+mechanisms:
+  - id: shibboleth-saml2
+    label: Shibboleth SAML 2.0 identity provider
+    x-operator: institution
+    status: live
+    entity_id: https://idp.iitd.ac.in/idp/shibboleth
+    metadata_url: https://idp.iitd.ac.in/idp/shibboleth
+    scope: iitd.ac.in
+    federation:
+      name: INFED — Indian Access Management Federation
+      registration_authority: http://inflibnet.ac.in
+      interfederated_via: eduGAIN
+      edugain_entity_id: '672721'
+      first_seen_in_edugain: '2020-03-28'
+      edugain_connectivity_check: passing
+    profiles_advertised:
+      - urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect (SSO)
+      - urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST (SSO)
+      - urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign (SSO)
+      - urn:mace:shibboleth:1.0:profiles:AuthnRequest (SSO)
+      - urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect (SLO)
+      - urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST (SLO)
+      - urn:oasis:names:tc:SAML:2.0:bindings:SOAP (SLO, port 8443)
+      - urn:oasis:names:tc:SAML:2.0:bindings:SOAP (ArtifactResolution, port 8443)
+    roles:
+      - IDPSSODescriptor
+      - AttributeAuthorityDescriptor
+    evidence:
+      - url: https://idp.iitd.ac.in/idp/shibboleth
+        status: 200
+        content_type: application/xml
+        detail: >-
+          14,514-byte SAML 2.0 EntityDescriptor, OrganizationName "Indian Institute of
+          Technology Delhi", shibmd:Scope iitd.ac.in.
+      - url: https://idp.iitd.ac.in/idp/profile/SAML2/Redirect/SSO
+        status: 400
+        detail: >-
+          Shibboleth "Stale Request" page — the correct response to an unsolicited GET,
+          and positive proof the SSO profile is running rather than parked.
+    assessment: >-
+      The single strongest machine-readable surface IIT Delhi operates. Institution-run
+      by definition, self-describing, federation-registered, and entirely uncatalogued
+      anywhere in the institute's own developer-facing material.
+
+  - id: iitd-oauth2
+    label: IIT Delhi OAuth 2 apps server
+    x-operator: institution
+    status: live-but-gated
+    portal: https://oauth.iitd.ac.in/
+    self_description: >-
+      "Welcome to IIT Delhi's OAuth 2 apps server. You can create your own apps and use
+      IIT Delhi's authentication too!"
+    discovery:
+      openid_configuration: absent
+      oauth_authorization_server_metadata: absent
+      protected_resource_metadata: absent
+      dynamic_client_registration: not_published
+    published_scopes: none
+    evidence:
+      - url: https://oauth.iitd.ac.in/
+        status: 200
+        detail: Live portal, all detail behind an interactive login.
+      - url: https://oauth.iitd.ac.in/.well-known/openid-configuration
+        status: 404
+      - url: https://oauth.iitd.ac.in/.well-known/oauth-authorization-server
+        status: 404
+      - url: https://convocation.iitd.ac.in/api/gallery
+        status: 401
+        detail: >-
+          Cross-confirms the OAuth server is the real gate for institute web APIs — the
+          body reads "Authentication required. Please login via IITD OAuth."
+    assessment: >-
+      A genuine institution-operated authorization server with a developer-registration
+      story, and no machine-readable description of it whatsoever. An agent or an outside
+      developer cannot discover an endpoint, a grant type or a scope. This is the single
+      highest-leverage fix available to IIT Delhi: publishing RFC 8414 metadata would cost
+      one static document.
+
+  - id: dspace-rest
+    label: DSpace 8 REST API session/JWT authentication
+    x-operator: institution
+    status: live
+    note: >-
+      Host is the institute's own; the contract is the DSpace product's, not IIT Delhi's,
+      so no DSpace spec is saved in this repo. Recorded here for the access boundary only.
+    anonymous_read: partial
+    evidence:
+      - url: https://ir.iitd.ac.in/server/api
+        status: 200
+        detail: Root HAL document public; advertises an `authn` link and dspaceVersion "DSpace 8.0".
+      - url: https://ir.iitd.ac.in/server/api/discover/search/objects?query=api
+        status: 200
+        detail: Discovery search answers anonymously and returns embedded results.
+      - url: https://ir.iitd.ac.in/server/api/core/items
+        status: 401
+        detail: '{"status":401,"error":"Unauthorized","message":"Authentication is required"}'
+
+findings:
+  - severity: medium
+    id: session-id-in-401-body
+    detail: >-
+      convocation.iitd.ac.in returns a `debug` object containing a live `sessionID` to
+      wholly unauthenticated callers on the 401 path. Diagnostics of this kind belong in
+      server logs, never in an anonymous response body.
+    evidence:
+      - url: https://convocation.iitd.ac.in/api/gallery
+        status: 401
+  - severity: medium
+    id: no-authorization-server-metadata
+    detail: >-
+      The institute runs an OAuth 2 authorization server and publishes neither OpenID
+      Connect discovery nor RFC 8414 metadata, so nothing about it is machine-readable.
+    evidence:
+      - url: https://oauth.iitd.ac.in/.well-known/openid-configuration
+        status: 404

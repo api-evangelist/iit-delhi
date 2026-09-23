@@ -1,0 +1,164 @@
+---
+name: IIT Delhi — education-regime domain standard conformance
+generated: '2026-08-30'
+method: derived
+x-derivation: probed
+regime: education
+regime_standards:
+  - scim
+  - lti
+  - oneroster
+  - ed-fi
+  - caliper
+  - qti
+  - oai-pmh
+  - shibboleth
+  - saml
+  - orcid
+  - datacite
+  - crossref
+note: >-
+  Reward-only. Every entry below is either a live conformance confirmed by a probe against
+  a named URL, or a probed negative with the URL and status that established it. Nothing
+  here is inferred from a prose claim; IIT Delhi makes no conformance claims anywhere.
+
+conformant:
+  - standard: oai-pmh
+    version: '2.0'
+    x-operator: institution
+    endpoint: https://ir.iitd.ac.in/server/oai/request
+    evidence:
+      - url: https://ir.iitd.ac.in/server/oai/request?verb=Identify
+        status: 200
+        content_type: text/xml
+        detail: >-
+          Valid OAI-PMH 2.0 Identify response. repositoryName "DSpace at IIT Delhi",
+          protocolVersion 2.0, granularity YYYY-MM-DDThh:mm:ssZ, deletedRecord transient,
+          repositoryIdentifier ir.iitd.ac.in, earliestDatestamp 2026-04-02T09:41:04Z.
+      - url: https://ir.iitd.ac.in/server/oai/request?verb=ListMetadataFormats
+        status: 200
+        detail: >-
+          13 metadata formats advertised — oai_dc, qdc, mods, mets, didl, ore, xoai, dim,
+          rdf, marc, etdms, rioxx, uketd_dc.
+      - url: https://ir.iitd.ac.in/server/oai/request?verb=ListSets
+        status: 200
+        detail: >-
+          Sets resolve, including "Electronic Theses and Dissertations" and decade
+          collections 1961-1970 through 2021-2030.
+      - url: https://ir.iitd.ac.in/server/oai/request?verb=ListRecords&metadataPrefix=oai_dc&set=col_123456789_7562
+        status: 200
+        detail: Records return with populated Dublin Core; the harvesting surface is functional, not merely mounted.
+    assessment: Fully functional harvesting endpoint on the institution's own host.
+
+  - standard: saml
+    version: '2.0'
+    x-operator: institution
+    endpoint: https://idp.iitd.ac.in/idp/shibboleth
+    evidence:
+      - url: https://idp.iitd.ac.in/idp/shibboleth
+        status: 200
+        content_type: application/xml
+        detail: >-
+          SAML 2.0 EntityDescriptor, entityID https://idp.iitd.ac.in/idp/shibboleth,
+          IDPSSODescriptor + AttributeAuthorityDescriptor, OrganizationName
+          "Indian Institute of Technology Delhi".
+      - url: https://idp.iitd.ac.in/idp/profile/SAML2/Redirect/SSO
+        status: 400
+        detail: Live Shibboleth SSO profile responding with a "Stale Request" page to an unsolicited GET.
+
+  - standard: shibboleth
+    x-operator: institution
+    endpoint: https://idp.iitd.ac.in/idp/shibboleth
+    evidence:
+      - url: https://idp.iitd.ac.in/idp/shibboleth
+        status: 200
+        detail: >-
+          Metadata carries the urn:mace:shibboleth:metadata:1.0 namespace and
+          shibmd:Scope "iitd.ac.in"; SSO advertises the
+          urn:mace:shibboleth:1.0:profiles:AuthnRequest binding.
+      - url: https://technical.edugain.org/api.php?action=list_entities&format=json
+        status: 200
+        detail: >-
+          eduGAIN entity 672721, entityID https://idp.iitd.ac.in/idp/shibboleth,
+          displayName "Indian Institute of Technology Delhi", registration authority
+          http://inflibnet.ac.in (INFED, the Indian access-management federation),
+          scope iitd.ac.in, eduGAIN connectivity check passing, first seen 2020-03-28.
+    assessment: >-
+      Federation-registered and interfederated. This is the institution's strongest
+      standards conformance and it is nowhere reflected in its public developer material.
+
+not_conformant:
+  - standard: lti
+    result: not_found
+    evidence:
+      - url: https://moodle.iitd.ac.in/mod/lti/certs.php
+        status: 404
+      - url: https://moodle.iitd.ac.in/mod/lti/token.php
+        status: 404
+      - url: https://moodle.iitd.ac.in/mod/lti/auth.php
+        status: 404
+    detail: >-
+      The institute runs Moodle at moodle.iitd.ac.in (web services live — the REST
+      endpoint answers with a structured `invalidtoken` error), but no LTI Advantage
+      platform endpoint is exposed.
+  - standard: orcid
+    result: not_configured
+    evidence:
+      - url: https://ir.iitd.ac.in/server/api/config/properties/orcid.application-client-id
+        status: 200
+        detail: '"values": [] — the DSpace ORCID integration is present in the product but unconfigured.'
+  - standard: datacite
+    result: not_found
+    evidence:
+      - url: https://api.datacite.org/providers?query=Indian%20Institute%20of%20Technology%20Delhi
+        status: 200
+        detail: 0 providers. The repository mints local handles under the DSpace default prefix 123456789, not DOIs.
+      - url: https://ir.iitd.ac.in/server/api/core/metadataschemas
+        status: 200
+        detail: >-
+          A `datacite` metadata schema is registered, but that is a DSpace 8 stock schema,
+          not evidence of a DataCite membership or of minted DOIs.
+  - standard: crossref
+    result: not_found
+    evidence:
+      - url: https://api.crossref.org/members?query=Indian+Institute+of+Technology+Delhi
+        status: 200
+        detail: 0 members.
+  - standard: scim
+    result: not_probed_no_candidate_surface
+    detail: No provisioning or directory API is exposed on any iitd.ac.in host found in this run.
+  - standard: oneroster
+    result: not_probed_no_candidate_surface
+    detail: No student-information-system API is publicly exposed; aims.iitd.ac.in serves the stock Apache placeholder page.
+  - standard: ed-fi
+    result: not_probed_no_candidate_surface
+    detail: Ed-Fi is a US K-12 / state-agency data standard with no applicability to an Indian IIT.
+  - standard: caliper
+    result: not_probed_no_candidate_surface
+    detail: No learning-analytics event endpoint found on the Moodle deployment.
+  - standard: qti
+    result: not_probed_no_candidate_surface
+    detail: No assessment-interchange surface found.
+
+adjacent_standards_observed:
+  - standard: opensearch
+    version: '1.1'
+    evidence:
+      - url: https://ir.iitd.ac.in/server/opensearch/service
+        status: 200
+        content_type: application/opensearchdescription+xml
+        detail: OpenSearch description document, LongName "DSpace at IIT Delhi".
+  - standard: dublin-core
+    evidence:
+      - url: https://ir.iitd.ac.in/server/oai/request?verb=ListRecords&metadataPrefix=oai_dc&set=col_123456789_7562
+        status: 200
+  - standard: sitemaps.org
+    evidence:
+      - url: https://ir.iitd.ac.in/sitemap_index.xml
+        status: 200
+  - standard: rfc9457-problem-json
+    evidence:
+      - url: https://ir.iitd.ac.in/signposting/describedby/123456789
+        status: 404
+        content_type: application/problem+json
+        detail: Inherited from the DSpace/Spring stack rather than an IIT Delhi design decision.

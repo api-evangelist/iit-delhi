@@ -1,0 +1,96 @@
+openapi: 3.2.0
+info:
+  title: IIT Delhi Departmental Site Platform Pages API
+  version: '2026-08-30'
+  summary: Undocumented but publicly readable JSON API backing the shared React/Express site platform IIT Delhi runs across its departmental and unit subdomains.
+  description: 'Indian Institute of Technology Delhi operates a shared web platform used by several
+
+    of its departments and administrative units — the Convocation office
+
+    (`convocation.iitd.ac.in`), the Industrial Research & Development Unit
+
+    (`ird.iitd.ac.in`) and the Computer Services Centre (`csc.iitd.ac.in`) all serve a
+
+    create-react-app front end backed by an Express JSON API mounted at `/api`.'
+  contact:
+    name: Computer Services Centre, IIT Delhi
+    url: https://csc.iitd.ac.in/
+  x-operator: institution
+  x-provenance:
+    generated: '2026-08-30'
+    method: derived
+    x-derivation: probed
+    source:
+    - https://convocation.iitd.ac.in/api/news
+    - https://convocation.iitd.ac.in/api/contact
+    - https://convocation.iitd.ac.in/api/gallery
+    - https://ird.iitd.ac.in/api/contact
+    - https://ird.iitd.ac.in/api/circulars
+    - https://ird.iitd.ac.in/api/announcements
+    - https://ird.iitd.ac.in/api/pages
+    - https://csc.iitd.ac.in/api/contact
+    - https://csc.iitd.ac.in/api/pages
+    note: Reverse-described from observed anonymous responses. IIT Delhi did not publish this document and does not describe this API anywhere. Not a provider-authored contract.
+servers:
+- url: https://convocation.iitd.ac.in/api
+  description: Convocation office deployment (verified 2026-08-30)
+- url: https://ird.iitd.ac.in/api
+  description: Industrial Research & Development Unit deployment (verified 2026-08-30)
+- url: https://csc.iitd.ac.in/api
+  description: Computer Services Centre deployment (verified 2026-08-30)
+tags:
+- name: Pages
+  description: CMS page bodies rendered by the front end.
+paths:
+  /pages:
+    get:
+      operationId: listPages
+      tags:
+      - Pages
+      summary: List CMS page bodies
+      description: Verified 200 on csc.iitd.ac.in. On ird.iitd.ac.in the same path returns HTTP 500 with `{"error":"Failed to fetch cards"}` — an unhandled server fault surfaced to anonymous callers, observed 2026-08-30.
+      responses:
+        '200':
+          description: Array of page records carrying HTML bodies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+        '500':
+          description: Unhandled server fault
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+components:
+  schemas:
+    ServerError:
+      type: object
+      title: ServerError
+      properties:
+        error:
+          type: string
+      required:
+      - error
+    Page:
+      type: object
+      title: Page
+      properties:
+        id:
+          type: integer
+        page_details:
+          type:
+          - string
+          - 'null'
+          description: HTML body
+          unescaped: null
+      required:
+      - id
+  securitySchemes:
+    iitdOAuthSession:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+      description: Session cookie issued after an interactive login against the institute OAuth 2 server at https://oauth.iitd.ac.in/. That server publishes no OpenID Connect discovery document, no authorization or token endpoint documentation and no scope vocabulary — verified 404 on /.well-known/openid-configuration and /.well-known/oauth-authorization-server on 2026-08-30 — so the flow cannot be described further from public evidence.

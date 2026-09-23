@@ -1,0 +1,224 @@
+{
+  "x-provenance": {
+    "generated": "2026-08-30",
+    "method": "derived",
+    "source": [
+      "https://convocation.iitd.ac.in/api/news",
+      "https://convocation.iitd.ac.in/api/contact",
+      "https://convocation.iitd.ac.in/api/gallery",
+      "https://ird.iitd.ac.in/api/contact",
+      "https://ird.iitd.ac.in/api/circulars",
+      "https://ird.iitd.ac.in/api/announcements",
+      "https://ird.iitd.ac.in/api/pages",
+      "https://csc.iitd.ac.in/api/contact"
+    ],
+    "note": "Verbatim anonymous responses captured 2026-08-30, truncated to the first records. Per-record `created_by` / `updated_by` operator usernames were removed under the enrichment PII guardrail; nothing else was altered. IIT Delhi publishes no examples for this API.",
+    "x-derivation": "probed"
+  },
+  "examples": {
+    "convocation_news": {
+      "request": {
+        "method": "GET",
+        "url": "https://convocation.iitd.ac.in/api/news",
+        "headers": {}
+      },
+      "response": {
+        "status": 200,
+        "content_type": "application/json",
+        "truncated": true,
+        "total_records_at_probe": 10,
+        "body": [
+          {
+            "announcement_id": 43,
+            "convocation_id": 16,
+            "announcement_text": "Important Information for PhD students regarding seating of Guests in Dogra Hall in 1st Phase",
+            "announcement_date": "2024-08-06T18:30:00.000Z",
+            "image_path": "uploadsNews/1723022938433-convo-news.jpg",
+            "link": "",
+            "pdf_path": "uploadsNews/1723022380421-news.pdf",
+            "created_at": "2024-08-14T07:14:51.000Z",
+            "updated_at": "2024-08-14T07:14:51.000Z"
+          },
+          {
+            "announcement_id": 46,
+            "convocation_id": 16,
+            "announcement_text": "Convocation Brochure 2024",
+            "announcement_date": "2024-08-27T18:30:00.000Z",
+            "image_path": "uploadsNews/1723184925331-Convocation'24.jpg",
+            "link": "",
+            "pdf_path": "uploadsNews/1724845003083-brochure.pdf",
+            "created_at": "2024-08-14T07:14:51.000Z",
+            "updated_at": "2024-08-28T11:36:43.000Z"
+          }
+        ]
+      }
+    },
+    "convocation_contact": {
+      "request": {
+        "method": "GET",
+        "url": "https://convocation.iitd.ac.in/api/contact",
+        "headers": {}
+      },
+      "response": {
+        "status": 200,
+        "content_type": "application/json",
+        "truncated": true,
+        "total_records_at_probe": 4,
+        "body": [
+          {
+            "id": 1,
+            "title": "Dean, Academics",
+            "phone": "+91-11-2659 1708",
+            "email": "deanacad@admin.iitd.ac.in",
+            "created_at": "2024-08-14T06:37:54.000Z",
+            "updated_at": "2024-08-14T06:37:54.000Z"
+          },
+          {
+            "id": 2,
+            "title": "Deputy Registrar (Academics)",
+            "phone": " +91-11-2659 1737",
+            "email": "drpgsr@admin.iitd.ac.in",
+            "created_at": "2024-08-14T06:37:54.000Z",
+            "updated_at": "2026-07-02T08:59:35.000Z"
+          }
+        ]
+      }
+    },
+    "ird_contact": {
+      "request": {
+        "method": "GET",
+        "url": "https://ird.iitd.ac.in/api/contact",
+        "headers": {}
+      },
+      "response": {
+        "status": 200,
+        "content_type": "application/json",
+        "truncated": false,
+        "total_records_at_probe": 2,
+        "body": [
+          {
+            "id": 1,
+            "title": "Industrial Research & Development Unit",
+            "phone": "(91) 011-2659 7194",
+            "email": "arird@admin.iitd.ac.in",
+            "created_at": null,
+            "updated_at": null,
+            "location": "Indian Institute of Technology Delhi, Hauz Khas, New Delhi-110 016, INDIA"
+          },
+          {
+            "id": 2,
+            "title": null,
+            "phone": null,
+            "email": null,
+            "created_at": null,
+            "updated_at": null,
+            "location": null
+          }
+        ]
+      }
+    },
+    "ird_circulars": {
+      "request": {
+        "method": "GET",
+        "url": "https://ird.iitd.ac.in/api/circulars",
+        "headers": {}
+      },
+      "response": {
+        "status": 200,
+        "content_type": "application/json",
+        "truncated": true,
+        "total_records_at_probe": 49,
+        "body": [
+          {
+            "id": 2,
+            "Circular": "IITD/IRD/M-96/386640 Dt. 25/03/2025",
+            "Description": "Inviting applications for few vacant IRD Project Staff Apartments from project staff working on yearly contractual basis under sponsored research projects.",
+            "file": "uploadsCirculars/file-1742988567861.pdf",
+            "c_date": "2025-03-24T18:30:00.000Z"
+          },
+          {
+            "id": 3,
+            "Circular": "IITD/IRD/MI00001-PDA/385647",
+            "Description": "Extended PDA",
+            "file": "uploadsCirculars/file-1742988614547.pdf",
+            "c_date": "2025-03-24T18:30:00.000Z"
+          }
+        ]
+      }
+    },
+    "ird_announcements": {
+      "request": {
+        "method": "GET",
+        "url": "https://ird.iitd.ac.in/api/announcements",
+        "headers": {}
+      },
+      "response": {
+        "status": 200,
+        "content_type": "application/json",
+        "truncated": false,
+        "total_records_at_probe": 0,
+        "body": []
+      }
+    },
+    "csc_contact": {
+      "request": {
+        "method": "GET",
+        "url": "https://csc.iitd.ac.in/api/contact",
+        "headers": {}
+      },
+      "response": {
+        "status": 200,
+        "content_type": "application/json",
+        "truncated": false,
+        "total_records_at_probe": 1,
+        "body": [
+          {
+            "id": 1,
+            "title": "CSC Office  ",
+            "phone": "011-2659-7220",
+            "email": "help@cc.iitd.ac.in",
+            "location": "Ground Floor, Main Building, IIT Delhi",
+            "created_at": "2025-01-29T07:06:16.000Z",
+            "updated_at": "2025-11-10T06:16:09.000Z"
+          }
+        ]
+      }
+    },
+    "convocation_gallery_401": {
+      "request": {
+        "method": "GET",
+        "url": "https://convocation.iitd.ac.in/api/gallery",
+        "headers": {}
+      },
+      "response": {
+        "status": 401,
+        "content_type": "application/json",
+        "body": {
+          "success": false,
+          "error": "Authentication required. Please login via IITD OAuth.",
+          "code": "NOT_AUTHENTICATED",
+          "debug": {
+            "isAuthenticated": false,
+            "hasUser": false,
+            "sessionID": "<redacted \u2014 a live session identifier was returned to an anonymous caller>",
+            "hasCookie": false
+          }
+        }
+      }
+    },
+    "ird_pages_500": {
+      "request": {
+        "method": "GET",
+        "url": "https://ird.iitd.ac.in/api/pages",
+        "headers": {}
+      },
+      "response": {
+        "status": 500,
+        "content_type": "application/json",
+        "body": {
+          "error": "Failed to fetch cards"
+        }
+      }
+    }
+  }
+}

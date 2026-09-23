@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/iit-delhi/main/json-schema/iit-delhi-site-platform-schemas.json",
+  "title": "IIT Delhi Departmental Site Platform — response schemas",
+  "description": "Response shapes for the undocumented JSON API behind IIT Delhi's shared departmental site platform. Derived from the probed responses captured in examples/iit-delhi-site-platform-examples.json; IIT Delhi publishes no schema for this surface.",
+  "x-operator": "institution",
+  "x-provenance": {
+    "generated": "2026-08-30",
+    "method": "derived",
+    "source": [
+      "openapi/iit-delhi-site-platform-openapi.yml",
+      "examples/iit-delhi-site-platform-examples.json"
+    ],
+    "note": "Derived from live anonymous responses observed 2026-08-30. Not authored or published by IIT Delhi. Property nullability reflects what was actually observed, not a documented guarantee."
+  },
+  "$defs": {
+    "Contact": {
+      "type": "object",
+      "title": "Contact",
+      "description": "A departmental office directory entry. Observed on the convocation, ird and csc deployments.",
+      "properties": {
+        "id": { "type": "integer" },
+        "title": { "type": "string" },
+        "phone": { "type": ["string", "null"] },
+        "email": { "type": ["string", "null"], "format": "email" },
+        "location": { "type": ["string", "null"] },
+        "created_at": { "type": ["string", "null"], "format": "date-time" },
+        "updated_at": { "type": ["string", "null"], "format": "date-time" }
+      },
+      "required": ["id", "title"],
+      "additionalProperties": true
+    },
+    "NewsItem": {
+      "type": "object",
+      "title": "NewsItem",
+      "description": "An announcement published by the Convocation office. `image_path` and `pdf_path` are relative paths resolved against the deployment's /api/ base.",
+      "properties": {
+        "announcement_id": { "type": "integer" },
+        "convocation_id": { "type": ["integer", "null"] },
+        "announcement_text": { "type": "string" },
+        "announcement_date": { "type": ["string", "null"], "format": "date-time" },
+        "image_path": { "type": ["string", "null"] },
+        "link": { "type": ["string", "null"] },
+        "pdf_path": { "type": ["string", "null"] },
+        "created_at": { "type": ["string", "null"], "format": "date-time" },
+        "updated_at": { "type": ["string", "null"], "format": "date-time" }
+      },
+      "required": ["announcement_id", "announcement_text"],
+      "additionalProperties": true
+    },
+    "Circular": {
+      "type": "object",
+      "title": "Circular",
+      "description": "A numbered IRD administrative circular. Property names are capitalised here and lower-cased elsewhere in the same API; the platform serialises database columns verbatim.",
+      "properties": {
+        "id": { "type": "integer" },
+        "Circular": { "type": "string" },
+        "Description": { "type": ["string", "null"] },
+        "file": { "type": ["string", "null"] },
+        "c_date": { "type": ["string", "null"], "format": "date-time" }
+      },
+      "required": ["id", "Circular"],
+      "additionalProperties": true
+    },
+    "Page": {
+      "type": "object",
+      "title": "Page",
+      "description": "A CMS page record. `page_details` carries raw, unescaped HTML intended for direct rendering.",
+      "properties": {
+        "id": { "type": "integer" },
+        "page_details": { "type": ["string", "null"] }
+      },
+      "required": ["id"],
+      "additionalProperties": true
+    },
+    "AuthError": {
+      "type": "object",
+      "title": "AuthError",
+      "description": "The 401 body returned to anonymous callers on gated routes. The `debug` object is returned to unauthenticated clients and includes a session identifier.",
+      "properties": {
+        "success": { "type": "boolean", "const": false },
+        "error": { "type": "string" },
+        "code": { "type": "string", "examples": ["NOT_AUTHENTICATED"] },
+        "debug": {
+          "type": "object",
+          "properties": {
+            "isAuthenticated": { "type": "boolean" },
+            "hasUser": { "type": "boolean" },
+            "sessionID": { "type": "string" },
+            "hasCookie": { "type": "boolean" }
+          },
+          "additionalProperties": true
+        }
+      },
+      "required": ["success", "error", "code"],
+      "additionalProperties": true
+    },
+    "ServerError": {
+      "type": "object",
+      "title": "ServerError",
+      "description": "Minimal 500 body. Carries no error code, no correlation identifier and no retry guidance.",
+      "properties": { "error": { "type": "string" } },
+      "required": ["error"],
+      "additionalProperties": true
+    }
+  }
+}

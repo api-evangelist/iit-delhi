@@ -1,0 +1,280 @@
+# x-archived-from: iit-delhi-site-platform-openapi.yml
+# x-archived-on: 2026-09-16
+openapi: 3.1.0
+info:
+  title: IIT Delhi Departmental Site Platform API
+  version: '2026-08-30'
+  summary: >-
+    Undocumented but publicly readable JSON API backing the shared React/Express
+    site platform IIT Delhi runs across its departmental and unit subdomains.
+  description: |
+    Indian Institute of Technology Delhi operates a shared web platform used by several
+    of its departments and administrative units — the Convocation office
+    (`convocation.iitd.ac.in`), the Industrial Research & Development Unit
+    (`ird.iitd.ac.in`) and the Computer Services Centre (`csc.iitd.ac.in`) all serve a
+    create-react-app front end backed by an Express JSON API mounted at `/api`.
+
+    IIT Delhi publishes NO documentation, no version marker, no OpenAPI and no changelog
+    for this surface. It is not advertised as a product; it is the private backend of
+    public web sites, and its read endpoints happen to answer anonymous requests with
+    `application/json`. This document was reconstructed ENTIRELY from live probes on
+    2026-08-30 — every path, status code and schema below was observed, none was assumed.
+    Endpoints not listed here either 404 on all three deployments or were not probed.
+
+    Write operations and some media collections are gated behind the institute's own
+    OAuth 2 server at `https://oauth.iitd.ac.in/`; the API says so itself in its 401 body
+    (`"Authentication required. Please login via IITD OAuth."`). No scope vocabulary,
+    token endpoint or client-registration document is published, so the authenticated
+    half of this API is unreadable from outside.
+
+    x-operator: institution — every host is under IIT Delhi's own registrable domain
+    `iitd.ac.in`, the content is the institute's own, and no vendor identity appears in
+    any response.
+  contact:
+    name: Computer Services Centre, IIT Delhi
+    url: https://csc.iitd.ac.in/
+  x-operator: institution
+  x-provenance:
+    generated: '2026-08-30'
+    method: derived
+    x-derivation: probed
+    source:
+      - https://convocation.iitd.ac.in/api/news
+      - https://convocation.iitd.ac.in/api/contact
+      - https://convocation.iitd.ac.in/api/gallery
+      - https://ird.iitd.ac.in/api/contact
+      - https://ird.iitd.ac.in/api/circulars
+      - https://ird.iitd.ac.in/api/announcements
+      - https://ird.iitd.ac.in/api/pages
+      - https://csc.iitd.ac.in/api/contact
+      - https://csc.iitd.ac.in/api/pages
+    note: >-
+      Reverse-described from observed anonymous responses. IIT Delhi did not publish this
+      document and does not describe this API anywhere. Not a provider-authored contract.
+servers:
+  - url: https://convocation.iitd.ac.in/api
+    description: Convocation office deployment (verified 2026-08-30)
+  - url: https://ird.iitd.ac.in/api
+    description: Industrial Research & Development Unit deployment (verified 2026-08-30)
+  - url: https://csc.iitd.ac.in/api
+    description: Computer Services Centre deployment (verified 2026-08-30)
+tags:
+  - name: Contact
+    description: Departmental office contact directory entries.
+  - name: News
+    description: Announcements and news items published by the unit.
+  - name: Circulars
+    description: Numbered administrative circulars with attached documents.
+  - name: Pages
+    description: CMS page bodies rendered by the front end.
+  - name: Media
+    description: Image galleries. Gated behind IITD OAuth.
+paths:
+  /contact:
+    get:
+      operationId: listContacts
+      tags: [Contact]
+      summary: List departmental contact directory entries
+      description: >-
+        Verified 200 on all three deployments. Returns a flat array; an empty unit
+        returns `[]` rather than 404.
+      responses:
+        '200':
+          description: Array of contact entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+              examples:
+                ird:
+                  summary: Observed on ird.iitd.ac.in 2026-08-30
+                  value:
+                    - id: 1
+                      title: Industrial Research & Development Unit
+                      phone: (91) 011-2659 7194
+                      email: arird@admin.iitd.ac.in
+                      location: null
+                      created_at: '2024-08-14T00:00:00.000Z'
+                      updated_at: null
+  /news:
+    get:
+      operationId: listNews
+      tags: [News]
+      summary: List announcements and news items
+      description: >-
+        Verified 200 on convocation.iitd.ac.in. 404 on the ird and csc deployments — the
+        platform mounts routes per unit, so a path present on one host may be absent on
+        another.
+      responses:
+        '200':
+          description: Array of news / announcement records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewsItem'
+        '404':
+          description: Route not mounted on this deployment
+  /announcements:
+    get:
+      operationId: listAnnouncements
+      tags: [News]
+      summary: List unit announcements
+      description: Verified 200 on ird.iitd.ac.in, returning an empty array at probe time.
+      responses:
+        '200':
+          description: Array of announcement records (may be empty)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+              examples:
+                empty:
+                  summary: Observed on ird.iitd.ac.in 2026-08-30
+                  value: []
+        '404':
+          description: Route not mounted on this deployment
+  /circulars:
+    get:
+      operationId: listCirculars
+      tags: [Circulars]
+      summary: List administrative circulars
+      description: >-
+        Verified 200 on ird.iitd.ac.in, 49 records at probe time. Note the capitalised
+        `Circular` and `Description` property names — the platform serialises database
+        columns verbatim and its casing is not consistent across resources.
+      responses:
+        '200':
+          description: Array of circular records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Circular'
+        '404':
+          description: Route not mounted on this deployment
+  /pages:
+    get:
+      operationId: listPages
+      tags: [Pages]
+      summary: List CMS page bodies
+      description: >-
+        Verified 200 on csc.iitd.ac.in. On ird.iitd.ac.in the same path returns HTTP 500
+        with `{"error":"Failed to fetch cards"}` — an unhandled server fault surfaced to
+        anonymous callers, observed 2026-08-30.
+      responses:
+        '200':
+          description: Array of page records carrying HTML bodies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+        '500':
+          description: Unhandled server fault
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+  /gallery:
+    get:
+      operationId: listGallery
+      tags: [Media]
+      summary: List image gallery entries
+      description: >-
+        Verified 401 for anonymous callers on convocation.iitd.ac.in. The error body names
+        IITD OAuth as the required authentication route and leaks session diagnostics.
+      security:
+        - iitdOAuthSession: []
+      responses:
+        '200':
+          description: Array of gallery entries (not observable anonymously)
+        '401':
+          description: Authentication required via IITD OAuth
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+components:
+  securitySchemes:
+    iitdOAuthSession:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+      description: >-
+        Session cookie issued after an interactive login against the institute OAuth 2
+        server at https://oauth.iitd.ac.in/. That server publishes no OpenID Connect
+        discovery document, no authorization or token endpoint documentation and no scope
+        vocabulary — verified 404 on /.well-known/openid-configuration and
+        /.well-known/oauth-authorization-server on 2026-08-30 — so the flow cannot be
+        described further from public evidence.
+  schemas:
+    Contact:
+      type: object
+      title: Contact
+      properties:
+        id: { type: integer }
+        title: { type: string, description: Office or role name }
+        phone: { type: [string, 'null'] }
+        email: { type: [string, 'null'], format: email }
+        location: { type: [string, 'null'] }
+        created_at: { type: [string, 'null'], format: date-time }
+        updated_at: { type: [string, 'null'], format: date-time }
+      required: [id, title]
+    NewsItem:
+      type: object
+      title: NewsItem
+      properties:
+        announcement_id: { type: integer }
+        convocation_id: { type: [integer, 'null'] }
+        announcement_text: { type: string }
+        announcement_date: { type: [string, 'null'], format: date-time }
+        image_path: { type: [string, 'null'], description: Relative path under uploadsNews/ }
+        link: { type: [string, 'null'] }
+        pdf_path: { type: [string, 'null'] }
+        created_at: { type: [string, 'null'], format: date-time }
+        updated_at: { type: [string, 'null'], format: date-time }
+      required: [announcement_id, announcement_text]
+    Circular:
+      type: object
+      title: Circular
+      properties:
+        id: { type: integer }
+        Circular: { type: string, description: Circular reference number and date }
+        Description: { type: [string, 'null'] }
+        file: { type: [string, 'null'], description: Relative path to the attached document }
+        c_date: { type: [string, 'null'], format: date-time }
+      required: [id, Circular]
+    Page:
+      type: object
+      title: Page
+      properties:
+        id: { type: integer }
+        page_details: { type: [string, 'null'], description: HTML body, unescaped }
+      required: [id]
+    AuthError:
+      type: object
+      title: AuthError
+      properties:
+        success: { type: boolean, const: false }
+        error: { type: string }
+        code: { type: string, examples: [NOT_AUTHENTICATED] }
+        debug:
+          type: object
+          description: >-
+            Session diagnostics returned to unauthenticated callers, including a session
+            identifier. Exposing this to anonymous clients is a reportable finding.
+      required: [success, error, code]
+    ServerError:
+      type: object
+      title: ServerError
+      properties:
+        error: { type: string }
+      required: [error]
