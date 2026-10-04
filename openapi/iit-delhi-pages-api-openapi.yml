@@ -66,6 +66,14 @@ paths:
                 $ref: '#/components/schemas/ServerError'
 components:
   schemas:
+    ServerError:
+      type: object
+      title: ServerError
+      properties:
+        error:
+          type: string
+      required:
+      - error
     Page:
       type: object
       title: Page
@@ -80,14 +88,6 @@ components:
           unescaped: null
       required:
       - id
-    ServerError:
-      type: object
-      title: ServerError
-      properties:
-        error:
-          type: string
-      required:
-      - error
   securitySchemes:
     iitdOAuthSession:
       type: apiKey
