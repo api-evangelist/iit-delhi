@@ -1,4 +1,4 @@
-# Indian Institute of Technology Delhi (iit-delhi)
+# Indian Institute of Technology Delhi
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,51 +64,132 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Indian Institute of Technology Delhi (IIT Delhi) is a public technical and research university in Hauz Khas, New Delhi, an Institute of National Importance and Institution of Eminence ranked #118 in the QS World University Rankings 2025. This repository catalogs IIT Delhi's public developer/API footprint as an [APIs.json](https://apisjson.org) profile.
+Indian Institute of Technology Delhi (IIT Delhi) is a public technical and research university in Hauz Khas, New Delhi — an Institute of National Importance and an Institution of Eminence, ranked #118 in the QS World University Rankings 2025. IIT Delhi operates no developer portal, publishes no API documentation, no OpenAPI, no terms of service for machine access and no security.txt or llms.txt, and nothing in this profile was published by the institute as a developer-facing product. What it does operate, and what this profile records, is a small set of genuinely institution-run machine-readable surfaces found by probing its own domain: a Shibboleth SAML 2.0 identity provider at idp.iitd.ac.in whose metadata is self-published and registered in the Indian access-management federation INFED and interfederated through eduGAIN since 2020 — the institute's strongest and least-known standards conformance; a DSpace 8 institutional repository at ir.iitd.ac.in with a functional OAI-PMH 2.0 harvesting endpoint advertising thirteen metadata formats; an OAuth 2 apps server at oauth.iitd.ac.in that lets campus developers register applications but publishes no discovery document, endpoint list or scope vocabulary; a Moodle deployment whose web-service endpoint answers but is token-gated; and an undocumented JSON API behind the shared React/Express site platform its departments run, which answers anonymous reads on convocation.iitd.ac.in, ird.iitd.ac.in and csc.iitd.ac.in. Its research information system is a tenant on INFLIBNET's national IRINS platform, and its library discovery runs through the DELNET consortium — both real institutional facts, neither IIT Delhi's engineering. The 2019-era student DevClub API that earlier profiles listed as a surface is dead: its host redirects to a domain that no longer resolves and its TLS certificate expired in August 2025.
 
-- APIs.json: https://raw.githubusercontent.com/api-evangelist/iit-delhi/refs/heads/main/apis.yml
-- Run it with Naftiko: https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=iit-delhi-api-evangelist&utm_content=repo
+**Areas:** Education · Higher Education · University · Institute of Technology · Research · India · Open Access · Library · Research Repository · Identity Federation
 
-## Type
+## Indian Institute of Technology Delhi on APIs.io
 
-- Index
-- Consumer
-- 3rd-Party
+Everything profiled for Indian Institute of Technology Delhi is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/iit-delhi/](https://apis.io/providers/iit-delhi/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (12)
 
-Education, Higher Education, University, Research, India, Open Access, Library
+- [IIT Delhi Shibboleth Identity Provider (SAML 2.0 metadata)](https://apis.io/apis/iit-delhi/idp-shibboleth/) — IIT Delhi runs its own Shibboleth identity provider at idp.iitd.ac.in and self-publishes its SAML 2.0 metadata as a machine-readable EntityDescriptor. The…
+- [IIT Delhi Institutional Repository OAI-PMH](https://apis.io/apis/iit-delhi/oai-pmh/) — OAI-PMH 2.0 metadata-harvesting interface for the IIT Delhi DSpace 8 institutional repository, on the institute's own host. Verified functional on…
+- [IIT Delhi Institutional Repository DSpace REST API](https://apis.io/apis/iit-delhi/dspace-rest/) — The IIT Delhi Central Library institutional repository runs on DSpace 8.0 and exposes the standard DSpace REST/HAL API at /server/api on the institute's own…
+- [IIT Delhi OAuth 2 Authentication Server](https://apis.io/apis/iit-delhi/oauth2/) — IIT Delhi operates an OAuth 2 authorization server that lets developers register their own campus apps and authenticate users with IIT Delhi credentials,…
+- [IIT Delhi Moodle Web Services](https://apis.io/apis/iit-delhi/moodle-webservices/) — IIT Delhi self-hosts Moodle for the 2025-2026 academic year at moodle.iitd.ac.in, and its web-services endpoint is live: an anonymous call to…
+- [IIT Delhi Research Profiles on IRINS](https://apis.io/apis/iit-delhi/irins/) — IIT Delhi's research information management portal is an institution-specific tenant on IRINS, the Indian Research Information Network System operated by…
+- [IITD Connect API (DevClub) — retired](https://apis.io/apis/iit-delhi/iitd-connect/) — Backend API for IITD Connect, the student-built IIT Delhi campus app maintained by DevClub, documented via Postman with User, Event, Club/Hostel/Body, News…
+- [Indian Institute of Technology Delhi Circulars API](https://apis.io/apis/iit-delhi/iit-delhi-circulars-api/) — Numbered administrative circulars with attached documents.
+- [Indian Institute of Technology Delhi Contact API](https://apis.io/apis/iit-delhi/iit-delhi-contact-api/) — Departmental office contact directory entries.
+- [Indian Institute of Technology Delhi Media API](https://apis.io/apis/iit-delhi/iit-delhi-media-api/) — Image galleries. Gated behind IITD OAuth.
+- [Indian Institute of Technology Delhi News API](https://apis.io/apis/iit-delhi/iit-delhi-news-api/) — Announcements and news items published by the unit.
+- [Indian Institute of Technology Delhi Pages API](https://apis.io/apis/iit-delhi/iit-delhi-pages-api/) — CMS page bodies rendered by the front end.
 
-## APIs
+### Published properties
 
-- **IIT Delhi Institutional Repository DSpace REST API** — DSpace 8.0 REST/HAL API for the Central Library institutional repository. [Docs](https://ir.iitd.ac.in/server/api)
-- **IIT Delhi Institutional Repository OAI-PMH** — OAI-PMH 2.0 metadata-harvesting interface for theses, dissertations, and scholarly output. [Docs](https://ir.iitd.ac.in/server/oai/request?verb=Identify)
-- **IIT Delhi OAuth 2 Authentication Server** — OAuth 2 authorization server for campus apps; login/CAPTCHA gated. [Docs](https://oauth.iitd.ac.in/)
-- **IITD Connect API (DevClub)** — Student-built campus/mobile app backend with Postman docs and Bearer-token auth. [Docs](https://documenter.getpostman.com/view/11367216/SzmmUEKQ)
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## Plans, Rate Limits & FinOps
+#### JSON Schema (1)
 
-- [Plans / Pricing](plans/iit-delhi-plans-pricing.yml)
-- [Rate Limits](rate-limits/iit-delhi-rate-limits.yml)
-- [FinOps](finops/iit-delhi-finops.yml)
+The data models the API reads and writes.
 
-## Timestamps
+- [IIT Delhi Departmental Site Platform — response schemas](https://apis.io/schemas/iit-delhi/iit-delhi-site-platform-schemas/)
 
-- Created: 2026-06-03
-- Modified: 2026-06-03
+#### JSON-LD (1)
 
-## Common Properties
+Linked-data contexts for the provider's vocabulary.
 
-- Website: https://home.iitd.ac.in/
-- GitHub (official org): https://github.com/iit-delhi
-- Source Code (DevClub): https://github.com/devclub-iitd
-- LinkedIn: https://www.linkedin.com/school/iitdelhi/
-- Authentication: https://oauth.iitd.ac.in/
+- [Iit Delhi Context](https://apis.io/jsonld/iit-delhi/iit-delhi-context/)
 
-## Notes
+#### Examples (1)
 
-IIT Delhi has no centralized, productized public API portal. All entries reflect only surfaces verified live during cataloging (2026-06-03): the DSpace REST root and OAI-PMH Identify endpoint both returned HTTP 200, the DSpace items endpoint returned 401 (auth required), and the OAuth 2 server is live but gated. The IITD Connect API is a student DevClub project requiring a Bearer token. The legacy `eprint.iitd.ac.in` EPrints/OAI host did not resolve during probing. No endpoints were fabricated.
+Example requests and responses.
 
-## Maintainers
+- [Iit Delhi Site Platform Examples](https://apis.io/examples/iit-delhi/iit-delhi-site-platform-examples/)
 
-- Kin Lane — kin@apievangelist.com
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Iit Delhi Authentication](https://apis.io/security/iit-delhi/iit-delhi-authentication/)
+- [Iit Delhi Domain Security](https://apis.io/security/iit-delhi/iit-delhi-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Iit Delhi Plans Pricing](https://apis.io/plans/iit-delhi/iit-delhi-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Iit Delhi Rate Limits](https://apis.io/rate-limits/iit-delhi/iit-delhi-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Iit Delhi Finops](https://apis.io/finops/iit-delhi/iit-delhi-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://home.iitd.ac.in/)
+- [GitHub](https://github.com/iit-delhi)
+
+## API Evangelist rating
+
+**Kin Score 17.9** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 57.1 |
+| Contract quality | 24.4 |
+| Contract governance | 0.0 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 21.4 |
+| Access clarity | 5.3 |
+
+**Agent readiness 21.6** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | na |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | na |
+| Error Semantics | — |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | na |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 16.7** — Education & Research
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/iit-delhi/](https://apis.io/providers/iit-delhi/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Indian Institute of Technology Delhi: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/iit-delhi/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
